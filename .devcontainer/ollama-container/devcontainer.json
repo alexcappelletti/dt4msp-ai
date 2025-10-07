@@ -1,0 +1,7 @@
+{
+  "name": "Ollama Container",
+  "dockerComposeFile": ["../../docker-compose.yaml"],
+  "service": "ollama",
+  "shutdownAction": "none"
+  
+}

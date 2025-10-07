@@ -1,0 +1,64 @@
+version: '3.8'
+services:
+  ollama:
+    build:
+      context: .
+      dockerfile: dockerfile.ollama
+      args:
+        MODEL_NAME: ${LLM_MODEL_NAME}
+    container_name: ollama-cappelle-2    
+    volumes:
+      - ollama-vol:/root/.ollama  
+      - ./ollama-entrypoint.sh:/entrypoint.sh
+      - .:/workspace
+    ports:
+      - "11434:11434"
+    environment:
+      - LLM_MODEL=${LLM_MODEL_NAME} 
+    entrypoint: ["/bin/bash", "/entrypoint.sh"] 
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:11434 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 1
+    # pull_policy: always
+    tty: true
+    restart: always
+    networks:
+      - ollama
+    command: sleep infinity
+   
+
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile.app
+    container_name: processor-app
+    volumes:
+      - .:/app
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=${LLM_MODEL_NAME}
+    command: sleep infinity
+    depends_on:
+      - ollama
+    networks:
+      - ollama
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://ollama:11434 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 1
+    tty: true
+    stdin_open: true
+
+networks:
+  ollama:
+    external: false
+
+
+volumes:
+  ollama-vol:
+    driver: local    
+
+  

@@ -1,0 +1,10 @@
+flask
+numpy
+pandas
+dotenv
+python-dotenv
+openpyxl
+pydantic
+requests
+ollama
+openai
