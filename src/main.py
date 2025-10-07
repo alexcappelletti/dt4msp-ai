@@ -36,7 +36,8 @@ def main():
         if f.lower().endswith(".heic")
     ])[:3]
     #MODEL = 'gpt-4.1-mini'
-    MODEL = 'gpt-4o-mini'
+    #MODEL = 'gpt-4o-mini'
+    MODEL = 'gpt-5-nano'
     
     for inputFile in heicFiles:
         print(f"📤 task on: {inputFile.name}")
