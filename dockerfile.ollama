@@ -5,6 +5,6 @@ ARG MODEL_NAME=phi4
 WORKDIR /
 ENV MODEL_NAME=${MODEL_NAME}
 ENV LLM_MODEL=${MODEL_NAME}
-COPY ./ollama_pull_models.sh pull_models.sh
-RUN chmod +x pull_models.sh && ./pull_models.sh
+# COPY ./ollama_pull_models.sh pull_models.sh
+# RUN chmod +x pull_models.sh && ./pull_models.sh
 EXPOSE 11434

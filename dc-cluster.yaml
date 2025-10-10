@@ -1,0 +1,71 @@
+version: '3.8'
+services:
+  ollama:
+    build:
+      context: .
+      dockerfile: dockerfile.ollama
+      args:
+        MODEL_NAME: ${LLM_MODEL_NAME}
+    container_name: dt4msp-ai-cappelle-i3-${GPU}    
+    volumes:
+      - ollama-vol:/root/.ollama  
+      - ./ollama-entrypoint.sh:/entrypoint.sh
+      - .:/code
+    ports:
+      - "11434:11434"
+    environment:
+      - LLM_MODEL=${LLM_MODEL_NAME} 
+    entrypoint: ["/bin/bash", "/entrypoint.sh"] 
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -f http://localhost:11434 || exit 1"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 1
+    # pull_policy: always
+    tty: true
+    restart: always
+    networks:
+      - ollama
+    #command: sleep infinity
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              #count: 1
+              capabilities: [gpu]
+              device_ids: ["${GPU}"]  # Specify the GPU ID here
+
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile.cluster-app
+    container_name: processor-cappelle-i3-${GPU}
+    volumes:
+      - .:/app
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=${LLM_MODEL_NAME}
+    depends_on:
+      - ollama
+    networks:
+      - ollama
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://ollama:11434 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 1
+    tty: true
+    stdin_open: true
+    # command: ["python", "/app/src/check-ollama.py"]
+
+networks:
+  ollama:
+    external: false
+
+
+volumes:
+  ollama-vol:
+    driver: local    
+
+  

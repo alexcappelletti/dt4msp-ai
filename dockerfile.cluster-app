@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11.6-slim
+FROM python:3.12.11-slim-bookworm
 
 # Set the working directory in the container
 WORKDIR /app
@@ -20,4 +20,4 @@ ENV NAME=World
 
 # Run app.py when the container launches
 #CMD ["python", "./src/check-ollama.py"]
-#CMD ["python", "./src/structured-process.py"]
+CMD ["python", "./src/process-with-ollama.py"]

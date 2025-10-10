@@ -1,8 +1,10 @@
 from convertImages import convertHeicToPng
 from openAITranscript import transcriptImage
+
 import os
 import json
 from pathlib import Path
+
 
 def updateResults(resultsPath: Path, newEntry: dict):
     try:

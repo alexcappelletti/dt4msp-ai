@@ -8,3 +8,5 @@ pydantic
 requests
 ollama
 openai
+pillow
+pillow-heif

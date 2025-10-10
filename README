@@ -1,0 +1,23 @@
+# run ollama server
+A test of Ollama for analyzing a list of abstracts
+
+
+`docker compose up --build ollama`
+----
+## Sviluppo con devcontainer
+é possibile utilizzare e testare il codice python con devcontainer che abilita ollama server in un container separato
+in vscode eseguire il comando da palette:  "dev containers: open in container... "
+
+quindi selezionare "Python App Container" dalla lista dei dev-containers.
+
+una volta completato lo startup da un terminal é possibile eseguire le chiamate restful per controllare il server ollama
+
+ad es per visualizzare la lista del modelli caricati eseguire: 
+```
+curl http://ollama:11434/api/tags
+```
+
+
+nel container corrente "Python App Container" é possibile utilizzare i notebook jupyter
+
+
