@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import base64
 from openai import OpenAI
+import pprint
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -22,19 +23,22 @@ def encode_image_to_base64(path):
 def transcriptImage(imagePath: Path, model: str) -> str:
     with open(imagePath, "rb") as imgFile:
         base64Image = base64.b64encode(imgFile.read()).decode("utf-8")
-
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": TRANSCRIPTION_PROMPT},
-                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64Image}"}}
-                ]
-            }
-        ],
-        max_completion_tokens=1000
-    )
-
-    return response.choices[0].message.content.strip()
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": TRANSCRIPTION_PROMPT},
+                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64Image}"}}
+                    ]
+                }
+            ],
+            max_completion_tokens=1000
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        raise Exception(f"Errore durante la trascrizione con OpenAI: {str(e)}") 
+        
+    
