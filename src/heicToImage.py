@@ -1,6 +1,11 @@
 import os
 from PIL import Image
 import pillow_heif
+
+
+
+
+
 # Registra il decoder HEIC
 pillow_heif.register_heif_opener()
 # Directory di input e output
@@ -16,9 +21,8 @@ for filename in heic_files:
 	output_path = os.path.join(output_dir, filename.lower().replace(".heic", ".jpeg"))
 	try:
 		img = Image.open(input_path)
+
 		img.save(output_path, format="JPEG")
 		print(f"✅ Converted: {filename} → {output_path}")
 	except Exception as e:
 		print(f"❌ Failed: {filename} → {e}")
-				
-				

@@ -1,5 +1,5 @@
 from convertImages import convertHeicToPng
-from openAITranscript import transcriptImage
+from ocr_tesseract import transcriptImage
 from transcriptError import TranscriptError
 
 import os
@@ -94,7 +94,7 @@ def main():
     #])
     #MODEL = 'gpt-4.1-mini'
     #MODEL = 'gpt-4o-mini'
-    MODEL = os.getenv("LLM_MODEL_NAME")
+    MODEL = "tesseract-ita"
     keyName = f"text-{MODEL}"
     existingResults  = loadResults(resultPath)
 
@@ -114,8 +114,8 @@ def main():
             continue
         start = time.time()
         try:
-            text = transcriptImage(pngPath, MODEL)
-            print(f" partial transcription result: {text[:50]}...")
+            text = transcriptImage(pngPath)
+            print(f" partial transcription result: {text[:150]}...")
             error = None
         except Exception as e:
             text = ""
