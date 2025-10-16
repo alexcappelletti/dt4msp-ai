@@ -38,7 +38,7 @@ def preprocess_image_for_ocr(pil_image: Image.Image) -> Image.Image:
     # )
 
 
-    resized = cv2.resize(denoised, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_LINEAR)
+    resized = cv2.resize(denoised   , None, fx=1.5, fy=1.5, interpolation=cv2.INTER_LINEAR)
     return Image.fromarray(resized)
 
 
